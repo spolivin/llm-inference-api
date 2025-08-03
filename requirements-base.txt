@@ -1,0 +1,10 @@
+diffusers
+transformers
+accelerate
+protobuf
+sentencepiece
+bitsandbytes
+python-multipart
+openai-whisper
+uvicorn
+fastapi

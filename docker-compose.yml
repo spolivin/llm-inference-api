@@ -1,0 +1,100 @@
+services:
+  whisper:
+    build:
+      context: ./whisper-api
+      dockerfile: Dockerfile
+    image: whisper-api
+    volumes:
+      - ./whisper-api/models:/models
+    ports:
+      - "8035:8035"
+    hostname: whisperapi_app
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+
+  tts:
+    build:
+      context: ./tts-api
+      dockerfile: Dockerfile
+    image: tts-api
+    volumes:
+      - ./tts-api/models:/models
+    ports:
+      - "8025:8025"
+    hostname: ttsapi_app
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+
+  gemma:
+    build:
+      context: ./gemma-api
+      dockerfile: Dockerfile
+    image: gemma-api
+    volumes:
+      - ./gemma-api/models:/models
+    ports:
+      - "8005:8005"
+    hostname: gemmaapi_app
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+
+  llama:
+    build:
+      context: ./llama-api
+      dockerfile: Dockerfile
+    image: llama-api
+    volumes:
+      - ./llama-api/models:/models
+    ports:
+      - "8012:8012"
+    hostname: llamaapi_app
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+
+  stable-diff:
+    build:
+      context: ./stable-diffusion-api
+      dockerfile: Dockerfile
+    image: sd-api
+    volumes:
+      - ~/.cache/huggingface:/app/.cache/huggingface:ro
+    ports:
+      - "8015:8015"
+    hostname: sdapi_app
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+
+  prometheus:
+    image: prom/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - "127.0.0.1:8090:9090"
+    volumes:
+      - "./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
+    hostname: prometheus
+
+  grafana:
+    image: grafana/grafana
+    env_file:
+      - ./.env
+    ports:
+      - "127.0.0.1:8034:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASS}

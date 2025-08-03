@@ -1,0 +1,9 @@
+torch
+-r requirements-base.txt
+isort
+black
+huggingface_hub[hf_xet]
+ctransformers>=0.2.24
+prometheus-fastapi-instrumentator
+soundfile
+python-dotenv
