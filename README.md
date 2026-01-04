@@ -10,7 +10,7 @@
 
 ## Overview
 
-This project is a functional prototype built to explore multi-container deployment of ML inference APIs using large language models. It intentionally skips production features (like reverse proxy and autoscaling) to focus on clean modular design, *Docker*-based deployment and *GPU* provisioning.
+This repository is a multi-container deployment project of ML inference APIs using large language models. It primarily focuses on clean modular design, *Docker*-based deployment and *GPU* provisioning.
 
 It includes: 
 
@@ -34,11 +34,15 @@ Each service is independently deployed using *FastAPI* and *Docker*, optimized f
 
 * *Docker Compose* with modular containers
 
+* *NGINX* as reverse proxy
+
 * Internal service communication over *HTTP*
 
 * Optimized *Docker* images using shared base and caching layers
 
 * Optionally supports *rootless Docker* for better isolation
+
+* Services metrics tracking system via *Prometheus* and their visualization with *Grafana*
 
 ## Requirements
 
