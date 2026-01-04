@@ -1,13 +1,13 @@
 services:
   whisper:
     build:
-      context: ./whisper-api
+      context: ./services/whisper-api
       dockerfile: Dockerfile
     image: whisper-api
     volumes:
-      - ./whisper-api/models:/models
-    ports:
-      - "8035:8035"
+      - ./services/whisper-api/models:/models
+    expose:
+      - "8035"
     hostname: whisperapi_app
     deploy:
       resources:
@@ -17,13 +17,13 @@ services:
 
   tts:
     build:
-      context: ./tts-api
+      context: ./services/tts-api
       dockerfile: Dockerfile
     image: tts-api
     volumes:
-      - ./tts-api/models:/models
-    ports:
-      - "8025:8025"
+      - ./services/tts-api/models:/models
+    expose:
+      - "8025"
     hostname: ttsapi_app
     deploy:
       resources:
@@ -33,13 +33,13 @@ services:
 
   gemma:
     build:
-      context: ./gemma-api
+      context: ./services/gemma-api
       dockerfile: Dockerfile
     image: gemma-api
     volumes:
-      - ./gemma-api/models:/models
-    ports:
-      - "8005:8005"
+      - ./services/gemma-api/models:/models
+    expose:
+      - "8005"
     hostname: gemmaapi_app
     deploy:
       resources:
@@ -49,13 +49,13 @@ services:
 
   llama:
     build:
-      context: ./llama-api
+      context: ./services/llama-api
       dockerfile: Dockerfile
     image: llama-api
     volumes:
-      - ./llama-api/models:/models
-    ports:
-      - "8012:8012"
+      - ./services/llama-api/models:/models
+    expose:
+      - "8012"
     hostname: llamaapi_app
     deploy:
       resources:
@@ -65,19 +65,33 @@ services:
 
   stable-diff:
     build:
-      context: ./stable-diffusion-api
+      context: ./services/stable-diffusion-api
       dockerfile: Dockerfile
     image: sd-api
     volumes:
       - ~/.cache/huggingface:/app/.cache/huggingface:ro
-    ports:
-      - "8015:8015"
+    expose:
+      - "8015"
     hostname: sdapi_app
     deploy:
       resources:
         reservations:
           devices:
             - capabilities: [gpu]
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - whisper
+      - tts
+      - gemma
+      - llama
+      - stable-diff
 
   prometheus:
     image: prom/prometheus
