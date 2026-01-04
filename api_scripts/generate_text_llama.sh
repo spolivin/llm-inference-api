@@ -1,7 +1,7 @@
 #!/bin/bash
 
 curl -s \
-  'http://localhost:8012/generate' \
+  'http://localhost/api/v1/llama/generate' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{

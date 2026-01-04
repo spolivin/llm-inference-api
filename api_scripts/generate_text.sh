@@ -1,7 +1,7 @@
 #!/bin/bash
 
 curl -s \
-  'http://localhost:8005/generate' \
+  'http://localhost/api/v1/gemma/generate' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
