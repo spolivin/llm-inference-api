@@ -136,38 +136,38 @@ sh hf_login.sh <YOUR-HF-TOKEN>
 #### 1. LLaMA model (text generation)
 
 ```bash
-cd llama-api
+cd services/llama-api
 sh download_llama_weights.sh
-cd ..
+cd ../..
 ```
 
 #### 2. Gemma model (text generation)
 
 ```bash
-cd gemma-api
+cd services/gemma-api
 sh download_gemma_model.sh
-cd ..
+cd ../..
 ```
 
 #### 3. Stable Diffusion model (image generation)
 ```bash
-cd stable-diffusion-api
+cd services/stable-diffusion-api
 python download_sd_model.py
-cd ..
+cd ../..
 ```
 
 #### 4. Silero TTS model (text-to-speech)
 ```bash
-cd tts-api
+cd services/tts-api
 python download_tts_model.py
-cd ..
+cd ../..
 ```
 
 #### 5. Whisper model (audio transcription to text)
 ```bash
-cd whisper-api
+cd services/whisper-api
 python download_whisper_model.py
-cd ..
+cd ../..
 ```
 
 After loading all models it is necessary to log out of Hugging Face to avoid the token getting leaked into containers during build stage:
