@@ -12,13 +12,13 @@
 10. [Troubleshooting](#troubleshooting)
 11. [License](#license)
 
-> A production-grade, GPU-accelerated inference platform for deploying multiple AI models as microservices. Built with Docker, FastAPI, and comprehensive monitoring capabilities.
+> A GPU-accelerated inference platform for deploying multiple AI models as microservices. Built with Docker, FastAPI, and Prometheus/Grafana monitoring.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Overview
 
-This project provides a scalable, containerized infrastructure for running multiple AI/ML models with GPU acceleration. Each model runs as an independent microservice behind an NGINX reverse proxy, with built-in monitoring via Prometheus and Grafana.
+This project provides a containerized infrastructure for running multiple AI/ML models with GPU acceleration. Each model runs as an independent microservice behind an NGINX reverse proxy, with built-in monitoring via Prometheus and Grafana.
 
 | Model                                                                         | Capability                                   | Framework    |
 | ----------------------------------------------------------------------------- | -------------------------------------------- | ------------ |
@@ -43,14 +43,14 @@ This project provides a scalable, containerized infrastructure for running multi
 
 ┌──────────────────────────────────┐
 │   Monitoring Stack               │
-│   • Prometheus (Port 9090)       │
-│   • Grafana (Port 3000)          │
+│   • Prometheus (Port 8090)       │
+│   • Grafana (Port 8034)          │
 └──────────────────────────────────┘
 ```
 
 **Key Design Decisions:**
 
-- **Microservices Architecture**: Each model runs in isolation for independent scaling and updates
+- **Microservices Architecture**: Each model runs in isolation for independent updates and deployment
 - **Shared Base Image**: Common dependencies cached in `Dockerfile.base` to reduce build time and storage
 - **GPU Sharing**: All services share a single GPU through NVIDIA Container Toolkit
 - **Non-root Containers**: Services run as unprivileged users for enhanced security
@@ -59,10 +59,10 @@ This project provides a scalable, containerized infrastructure for running multi
 ## Features
 
 ✅ **GPU Acceleration**: CUDA-optimized inference for all models  
-✅ **Containerized Deployment**: Docker Compose orchestration with multi-stage builds  
-✅ **Production Monitoring**: Prometheus metrics + Grafana dashboards  
+✅ **Containerized Deployment**: Docker Compose orchestration with a shared base image
+✅ **Monitoring**: Prometheus metrics + Grafana dashboards
 ✅ **Security Hardening**: Rootless Docker support, non-root containers  
-✅ **Reverse Proxy**: NGINX load balancing and routing  
+✅ **Reverse Proxy**: NGINX routing and request proxying
 ✅ **Modular Design**: Easy to add/remove models independently  
 ✅ **Optimized Builds**: Shared base image with dependency caching
 
@@ -185,7 +185,7 @@ Check that all services are running:
 make services
 ```
 
-> Expected output: 7 containers running (5 models + Prometheus + Grafana)
+> Expected output: 8 containers running (5 models + NGINX + Prometheus + Grafana)
 
 ## Usage
 
@@ -244,8 +244,8 @@ docker compose logs -f
 # Check open ports
 make open-ports
 
-# Rebuild specific service
-docker compose build
+# Rebuild a specific service
+docker compose build <service-name>
 
 # Stop all services
 make down-services
@@ -326,8 +326,7 @@ docker run --rm --gpus all nvidia/cuda:11.8.0-base-ubuntu22.04 nvidia-smi
 
 ### Out of Memory Errors
 
-- Reduce batch sizes in service configs
-- Lower `max_tokens` in generation requests
+- Lower `max_new_tokens` in generation requests
 - Run fewer models simultaneously
 
 ### Port Conflicts
