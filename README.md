@@ -58,12 +58,18 @@ This project provides a containerized infrastructure for running multiple AI/ML 
 
 ## Features
 
-✅ **GPU Acceleration**: CUDA-optimized inference for all models  
+✅ **GPU Acceleration**: CUDA-optimized inference for all models
+
 ✅ **Containerized Deployment**: Docker Compose orchestration with a shared base image
+
 ✅ **Monitoring**: Prometheus metrics + Grafana dashboards
-✅ **Security Hardening**: Rootless Docker support, non-root containers  
+
+✅ **Security Hardening**: Rootless Docker support, non-root containers
+
 ✅ **Reverse Proxy**: NGINX routing and request proxying
-✅ **Modular Design**: Easy to add/remove models independently  
+
+✅ **Modular Design**: Easy to add/remove models independently
+
 ✅ **Optimized Builds**: Shared base image with dependency caching
 
 ## Prerequisites
